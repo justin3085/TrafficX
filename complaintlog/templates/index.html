@@ -1,0 +1,9 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Homepage - {{ block.super }}{% endblock %}
+{% block content %}
+    {% for complaint in complaints %}
+    <h2>{{ complaint.complaintType }}</h2>
+        <p>{{ complaint.description }}</p>
+    {% endfor %}
+{% endblock %}
