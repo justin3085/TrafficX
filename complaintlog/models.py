@@ -1,11 +1,58 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Complaint(models.Model):
 
-    complaintType = models.CharField(max_length=25, verbose_name="Complaint Type")
-    dateofcomplaint = models.DateField(verbose_name="Date of Complaint")
+    COMPLAINT_TYPES = (
+        ('Speeding','Speeding'),
+        ('Parking','Parking'),
+        ('Sign Request','Sign Request'),
+        ('Survey','Survey'),
+        ('View Obstruction','View Obstruction'),
+        ('Engineering','Engineering'),
+        ('General','General'),
+        ('Stop Sign', 'Stop Sign'),
+
+    )
+    fname = models.CharField(max_length=100, verbose_name="First Name", blank=True, null=True)
+    lname = models.CharField(max_length=100, verbose_name="Last Name", blank=True, null=True)
+    address = models.CharField(max_length=100, verbose_name="Address", blank=True, null=True)
+    phone = models.IntegerField(verbose_name="Phone Number", blank=True, null=True)
+    altphone = models.IntegerField(verbose_name="Alt. Phone", blank=True, null=True)
+    email = models.EmailField(verbose_name="Email", blank=True,null=True)
+    city = models.CharField(max_length=100, verbose_name="City", blank=True, null=True)
+    date_of_complaint = models.DateField(verbose_name="Date of Complaint", null=True)
+    complaintType = models.CharField(max_length=25, choices=COMPLAINT_TYPES, verbose_name="Complaint Type", null=True)
     street = models.CharField(max_length=100, verbose_name="Street")
-    xstreet = models.CharField(max_length=100, verbose_name="Cross Street", blank=True)
-    description = models.TextField(verbose_name="Description")
+    xstreet = models.CharField(max_length=100, verbose_name="Cross Street", blank=True, null=True)
+    description = models.TextField(verbose_name="Description", null=True)
     slug = models.SlugField(unique=True)
+
+    #user = models.OneToOneField(User, blank=True, null=True)
+    #user = models.ForeignKey(to=Band, related_name="members", null=True, blank=True)
+
+    def __unicode__(self):
+        return self.complaintType
+
+
+class Complainant(models.Model):
+    complainant = models.ForeignKey(Complaint, on_delete=models.CASCADE)
+
+
+
+
+# class Social(models.Model):
+#     SOCIAL_TYPES = (
+#         ('twitter', 'Twitter'),
+#         ('facebook', 'Facebook'),
+#         ('pinterest', 'Pinterest'),
+#
+#     )
+#     network = models.CharField(max_length=255,
+#                                choices=SOCIAL_TYPES)
+#     username = models.CharField(max_length=255)
+#     complaint = models.ForeignKey(Complaint,
+#                                   related_name="social_accounts")
+
+

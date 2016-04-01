@@ -1,4 +1,5 @@
 from django.conf.urls import include, url, patterns
+from complaintlog import views
 from complaintlog.backends import MyRegistrationView
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -44,6 +45,8 @@ urlpatterns = patterns('',
 
     url(r'^about/$', TemplateView.as_view(template_name='about.html'),
         name='about'),
+
+    url(r'^contact/$', views.contact, name='contact'),
 
     url(r'^complaints/(?P<slug>[-\w]+)/edit/$',
         'complaintlog.views.edit_complaint', name='edit_complaint'),

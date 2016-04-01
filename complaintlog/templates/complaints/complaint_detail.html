@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} {{ complaint.complaintType }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <h1>{{ complaint.complaintType }} - {{ complaint.lname }}</h1>
+    <h3>{{ complaint.street }}</h3>
+    <h4>Date of Complaint: {{ complaint.date_of_complaint }}</h4>
+    <p>{{ complaint.description }}</p>
+    <!--{% if user == complaint.user %} !-->
+    <p>
+        <a href="{% url 'edit_complaint' slug=complaint.slug %}">Edit</a>
+    </p>
+{% endif %}
+
+
+{% endblock %}
