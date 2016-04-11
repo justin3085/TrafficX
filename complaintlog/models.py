@@ -29,30 +29,17 @@ class Complaint(models.Model):
     description = models.TextField(verbose_name="Description", null=True)
     slug = models.SlugField(unique=True)
 
-    #user = models.OneToOneField(User, blank=True, null=True)
+
     #user = models.ForeignKey(to=Band, related_name="members", null=True, blank=True)
 
     def __unicode__(self):
         return self.complaintType
 
 
-class Complainant(models.Model):
-    complainant = models.ForeignKey(Complaint, on_delete=models.CASCADE)
+class ComplaintActivity(models.Model):
+    pass
 
 
 
-
-# class Social(models.Model):
-#     SOCIAL_TYPES = (
-#         ('twitter', 'Twitter'),
-#         ('facebook', 'Facebook'),
-#         ('pinterest', 'Pinterest'),
-#
-#     )
-#     network = models.CharField(max_length=255,
-#                                choices=SOCIAL_TYPES)
-#     username = models.CharField(max_length=255)
-#     complaint = models.ForeignKey(Complaint,
-#                                   related_name="social_accounts")
 
 

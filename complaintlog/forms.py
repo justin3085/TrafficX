@@ -1,31 +1,19 @@
 from django.forms import ModelForm
 from complaintlog.models import Complaint
 from django import forms
+from django.utils.text import slugify
 
-class ComplaintForm(ModelForm):
+class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        fields = ('complaintType', 'description', 'fname', 'lname', 'street','date_of_complaint',)
+        fields = ('complaintType', 'description', 'fname', 'lname', 'street', 'date_of_complaint',)
+
+    def save(self):
+        instance = super(ComplaintForm, self).save(commit=False)
+        instance.slug = slugify(instance.complaintType)
+        instance.save()
 
 
-# class ComplaintForm(forms.ModelForm):
-#     class Meta:
-#         model = Complaint
-#         COMPLAINT_TYPES_CHOICES = (
-#             ('----','----'),
-#             ('Speeding', 'Speeding'),
-#             ('Parking', 'Parking'),
-#             ('Sign Request', 'Sign Request'),
-#             ('Survey', 'Survey'),
-#
-#
-#         )
-#         fields = ('fname','complaint_type',)
-#         complaint_type = forms.ChoiceField(choices=COMPLAINT_TYPES_CHOICES)
-
-        def __init__(self, *args, **kwargs):
-            super(ComplaintForm, self).__init__(*args, **kwargs)
-            self.fields['complaint_type'].label = "Select Complaint Type "
 
 class ContactForm(forms.Form):
     contact_name = forms.CharField(required=True)

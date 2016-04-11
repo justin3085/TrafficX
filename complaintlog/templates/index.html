@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Homepage - TrafficX{{ block.super }}{% endblock %}
+{% block title %}Homepage - {{ block.super }}{% endblock %}
 {% block content %}
     {% for complaint in complaints %}
     <h4><a href="{% url 'complaint_detail' slug=complaint.slug %}"/>

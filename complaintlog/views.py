@@ -8,7 +8,9 @@ from complaintlog.forms import ContactForm
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
-from complaintlog.models import Complainant
+from django.template import RequestContext
+
+
 
 
 # Create your views here.
@@ -25,15 +27,16 @@ def complaint_detail(request, slug):
     complaint = Complaint.objects.get(slug=slug)
     #pass to template
     return render(request, 'complaints/complaint_detail.html', {
-        'complaint':complaint,
+        'complaint': complaint,
     })
+
 
 @login_required
 def edit_complaint(request, slug):
     complaint = Complaint.objects.get(slug=slug)
     if complaint.complainant != request.complainant:
         raise Http404
-    
+
     form_class = ComplaintForm
     if request.method == 'POST':
         form = form_class(data=request.POST, instance=complaint)
@@ -42,26 +45,31 @@ def edit_complaint(request, slug):
             return redirect('complaint_detail', slug=complaint.slug)
     else:
         form = form_class(instance=complaint)
-    return render(request, 'complaints/edit_complaint.html', {
+        return render(request, 'complaints/edit_complaint.html', {
             'complaint': complaint,
-            'form':form,
+            'form': form,
         })
+
 
 def create_complaint(request):
     form_class = ComplaintForm
     if request.method == 'POST':
         form = form_class(request.POST)
         if form.is_valid():
-            complaint = form.save(commit=False)
-            #complaint.complainant = request.complainant
-            complaint.slug = slugify(complaint.complaintType)
-            complaint.save()
-            return redirect('complaint_detail', slug=complaint.slug)
+            complaint = form.save()
+           # complaint.complainant = request.complainant
+           # complaint.slug = slugify(complaint.complaintType)
+            #complaint.save()
+            render(request, 'complaints/complaint_detail.html',
+                   context_instance=RequestContext(request))
+            return redirect('complaint_detail') #slug=complaint.slug)
+
     else:
         form = form_class()
         return render(request, 'complaints/create_complaint.html', {
-            'form':form,
+            'form': form,
             })
+
 
 def contact(request):
     form_class = ContactForm
